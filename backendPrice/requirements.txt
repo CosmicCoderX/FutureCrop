@@ -1,6 +1,8 @@
-fastapi
-uvicorn[standard]
-joblib
-numpy
-scikit-learn
-pydantic>=1.10,<2
+# Backend dependencies for backendPrice
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+numpy==2.3.3
+pandas==2.3.2
+scikit-learn==1.7.2
+
