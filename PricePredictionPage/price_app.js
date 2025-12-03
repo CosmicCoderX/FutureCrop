@@ -2,7 +2,7 @@
    Compatible with backend endpoints + image folder support
 */
 
-const API_BASE = "https://futurecrop.onrender.com";
+const API_BASE = "https://futurecrop.onrender.com/predict_by_context";
 const IMAGE_BASE = "/images"; // Folder containing crop images
 
 /* DOM refs */
