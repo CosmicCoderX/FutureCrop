@@ -1,7 +1,7 @@
 /* Enhanced Crop Recommendation - JavaScript */
 
 const API_URL = "https://futurecrop-crop.onrender.com/predict";
-const IMAGE_BASE = "./images"; // Folder for crop images
+const IMAGE_BASE = "/images"; // Folder for crop images
 
 /* DOM Elements */
 const $ = (id) => document.getElementById(id);
