@@ -1,4 +1,4 @@
-# FutureCrop
+# FutureCrop  <img src="https://github.com/CosmicCoderX/FutureCrop/blob/main/images/AgriSenseLogo.png" alt="FutureCrop Logo" width="40" height="40" align="right">
 An AI-powered agriculture assistant offering **Crop Recommendation**, **Price Prediction**, and **Role‑based Access** with a modern dark‑theme UI.
 
 ---
