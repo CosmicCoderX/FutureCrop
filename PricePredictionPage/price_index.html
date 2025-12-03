@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Future Crop AI • Price Predictor</title>
+  <link rel="icon" type="image/png" href="./images/AgriSenseLogo.png" />
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Styles & app -->
+  <link rel="stylesheet" href="./price_style.css" />
+  <script defer src="./price_app.js"></script>
+</head>
+
+<body class="dark">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="logo">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-name">Future Crop AI</div>
+          <div class="brand-sub">AI-powered market forecasts</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="controls card">
+      <h3 class="small-title">Prediction Parameters</h3>
+
+      <label>Crop</label>
+      <select id="commodity" aria-label="Crop select">
+        <option>Loading…</option>
+      </select>
+
+      <label>Location (State)</label>
+      <select id="state" disabled>
+        <option>Select commodity first…</option>
+      </select>
+
+      <label>Market</label>
+      <select id="market" disabled>
+        <option>Select state first…</option>
+      </select>
+
+      <label>Forecast Period</label>
+      <select id="forecastPeriod">
+        <option value="1">1 Month</option>
+        <option value="3">3 Months</option>
+        <option value="6">6 Months</option>
+        <option value="12" selected>12 Months</option>
+      </select>
+
+      <div class="btn-row">
+        <button id="predictBtn" class="btn primary">
+          <span class="btn-icon">📊</span>
+          <span>Predict Prices</span>
+        </button>
+        <button id="clearBtn" class="btn ghost" title="Clear selection">
+          <span>✕</span>
+        </button>
+      </div>
+
+      <div class="status-group">
+        <div class="status-item">
+          <span class="status-dot" id="apiStatusDot"></span>
+          <span id="apiStatus">API: checking…</span>
+        </div>
+        <div class="status-item">
+          <span id="modelCount">Models: —</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom card small muted">
+      <strong>💡 Quick Tip:</strong> Select a crop, state and market — then hit Predict Prices to see AI-powered
+      forecasts.
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div class="top-left">
+      <button id="menuToggle" class="icon-btn" aria-label="Toggle menu">☰</button>
+    </div>
+    <div class="top-title">
+      <h1>Price Prediction</h1>
+      <p class="muted">AI-powered market price forecasting for your crops</p>
+    </div>
+
+    <div class="top-right">
+      <div id="confidenceBadge" class="badge muted">
+        <span class="badge-icon">🎯</span>
+        <span>— Confidence</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-grid container">
+    <section class="panel chart-panel card">
+      <div class="panel-head">
+        <h2>Price Forecast</h2>
+        <div class="panel-actions">
+          <button id="exportBtn" class="icon-btn small" title="Export data">
+            <span>📥</span>
+          </button>
+          <button id="fullscreenBtn" class="icon-btn small" title="Fullscreen chart">
+            <span>⛶</span>
+          </button>
+        </div>
+        <div id="marketLabel" class="muted">—</div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="priceChart" height="360"></canvas>
+      </div>
+
+      <!-- NEW — Cards moved below chart -->
+      <div class="price-summary-row summary-cards">
+        <div id="currentPriceCard" class="mini-card">
+          <div class="mini-card-icon">💰</div>
+          <div>
+            <div class="muted">Current Price</div>
+            <div class="big" id="currentPrice">—</div>
+            <div class="muted tiny">per quintal</div>
+          </div>
+        </div>
+
+        <div id="predictedCard" class="mini-card">
+          <div class="mini-card-icon">🔮</div>
+          <div>
+            <div class="muted">Predicted (end)</div>
+            <div class="big" id="predictedPrice">—</div>
+            <div class="muted tiny" id="predictedPct">—</div>
+          </div>
+        </div>
+
+        <div id="peakCard" class="mini-card">
+          <div class="mini-card-icon">📈</div>
+          <div>
+            <div class="muted">Peak Month</div>
+            <div class="big" id="peakMonth">—</div>
+            <div class="muted tiny">Best time to sell</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend-row">
+        <span class="legend-item">
+          <span class="legend-dot series"></span> Recent prices
+        </span>
+        <span class="legend-item">
+          <span class="legend-dot pred dashed"></span> Predicted
+        </span>
+        <div id="chartNote" class="muted tiny"></div>
+      </div>
+
+      <div id="insights" class="insights-section hide">
+        <h3>Market Insights</h3>
+        <div id="insightsList" class="insights-list"></div>
+      </div>
+    </section>
+
+    <aside class="panel info-panel card">
+      <h3>Crop Information</h3>
+      <div class="crop-info">
+        <div class="crop-img-wrapper">
+          <img id="cropImg" src="" alt="crop" />
+          <div class="crop-img-placeholder">🌾</div>
+        </div>
+        <div>
+          <div id="cropName" class="crop-title">—</div>
+          <div id="cropDesc" class="muted tiny">Select a crop to see information.</div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-icon">📊</div>
+          <div class="muted tiny">Window / Data</div>
+          <div id="metaWindow" class="strong">—</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">📍</div>
+          <div class="muted tiny">Used points</div>
+          <div id="metaUsed" class="strong">—</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">🔧</div>
+          <div class="muted tiny">Padded</div>
+          <div id="metaPadded" class="strong">—</div>
+        </div>
+      </div>
+
+      <div id="result" class="result hide" aria-live="polite"></div>
+
+      <div class="quick-stats hide" id="quickStats">
+        <h4>Quick Statistics</h4>
+        <div class="stat-row">
+          <span class="stat-label">Volatility:</span>
+          <span id="volatility" class="stat-value">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Trend:</span>
+          <span id="trend" class="stat-value">—</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Avg Change:</span>
+          <span id="avgChange" class="stat-value">—</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div id="toaster" class="toaster"></div>
+
+  <div id="loading" class="loading-overlay hide">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <div class="loading-text">Analyzing market data...</div>
+    </div>
+  </div>
+
+  <footer class="footer muted">© 2025 Future Crop AI • Built with intelligence</footer>
+</body>
+
+</html>

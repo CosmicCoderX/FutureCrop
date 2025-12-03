@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign In — Agrisense</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Add Google Fonts for better typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="vanta-bg"></div>
+
+  <main class="center-wrap">
+    <section class="auth-card">
+      <div class="brand">
+        <div class="logo">🌱</div>
+        <h1>Welcome Back!</h1>
+        <p class="muted">Sign in to access your smart farming dashboard</p>
+      </div>
+
+      <div class="actions">
+        <button id="googleSignInBtn" class="btn btn-google full">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+              fill="#4285F4" />
+            <path
+              d="M9.003 18c2.43 0 4.467-.806 5.956-2.18L12.05 13.56c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z"
+              fill="#34A853" />
+            <path
+              d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+              fill="#FBBC05" />
+            <path
+              d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z"
+              fill="#EA4335" />
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="divider"><span>OR</span></div>
+      </div>
+
+      <form id="loginForm" class="form">
+        <div class="input-group">
+          <label class="label">Email Address</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.33334 3.33334H16.6667C17.5833 3.33334 18.3333 4.08334 18.3333 5.00001V15C18.3333 15.9167 17.5833 16.6667 16.6667 16.6667H3.33334C2.41668 16.6667 1.66668 15.9167 1.66668 15V5.00001C1.66668 4.08334 2.41668 3.33334 3.33334 3.33334Z"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M18.3333 5L10 10.8333L1.66666 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <input type="email" id="loginEmail" class="input" placeholder="you@example.com" required
+              autocomplete="email">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="label">Password</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M15.8333 9.16667H4.16667C3.24619 9.16667 2.5 9.91286 2.5 10.8333V16.6667C2.5 17.5871 3.24619 18.3333 4.16667 18.3333H15.8333C16.7538 18.3333 17.5 17.5871 17.5 16.6667V10.8333C17.5 9.91286 16.7538 9.16667 15.8333 9.16667Z"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M5.83334 9.16667V5.83333C5.83334 4.72826 6.27233 3.66846 7.05373 2.88706C7.83513 2.10565 8.89493 1.66667 10 1.66667C11.1051 1.66667 12.1649 2.10565 12.9463 2.88706C13.7277 3.66846 14.1667 4.72826 14.1667 5.83333V9.16667"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <input type="password" id="loginPassword" class="input" placeholder="••••••••" required
+              autocomplete="current-password">
+            <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+              <svg class="eye-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M1.66666 10C1.66666 10 4.16666 4.16667 10 4.16667C15.8333 4.16667 18.3333 10 18.3333 10C18.3333 10 15.8333 15.8333 10 15.8333C4.16666 15.8333 1.66666 10 1.66666 10Z"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                  d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="rememberMe">
+            <span class="checkbox-label">Remember me</span>
+          </label>
+          <a href="#" class="forgot-link" id="forgotPassword">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary full">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-loader"></span>
+        </button>
+      </form>
+
+      <p class="signup-prompt">
+        Don't have an account? <a href="signup.html" class="signup-link">Sign up</a>
+      </p>
+
+      <div id="loginMessage" class="message"></div>
+    </section>
+  </main>
+
+  <!-- Firebase and app scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script src="firebase.js"></script>
+  <script src="loginScript.js"></script>
+
+  <script>
+    // Initialize Vanta background
+    VANTA.CELLS({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      color1: 0x06720a,
+      color2: 0x3acc2b,
+      speed: 0.90
+    });
+
+    // Password toggle functionality
+    document.getElementById('passwordToggle').addEventListener('click', function () {
+      const passwordInput = document.getElementById('loginPassword');
+      const eyeIcon = this.querySelector('.eye-icon');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.style.opacity = '1';
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.style.opacity = '0.5';
+      }
+    });
+
+    // Forgot password handler
+    document.getElementById('forgotPassword').addEventListener('click', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+
+      if (!email) {
+        alert('Please enter your email address first.');
+        document.getElementById('loginEmail').focus();
+        return;
+      }
+
+      // TODO: Implement password reset with Firebase
+      alert('Password reset link will be sent to: ' + email);
+    });
+  </script>
+</body>
+
+</html>

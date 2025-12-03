@@ -1,0 +1,4 @@
+- [ ] Update loginScript.js to use Firebase authentication instead of simulation
+- [ ] Add email/password sign in with Firebase
+- [ ] Add Google sign in for login
+- [ ] Test authentication flow

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Crop AI • Crop Recommendation</title>
+    <link rel="icon" type="image/png" href="./images/AgriSenseLogo.png" />
+    
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles & app -->
+    <link rel="stylesheet" href="./crop_style.css" />
+    <script defer src="./crop_app.js"></script>
+</head>
+<body class="dark">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="logo">
+                <span class="logo-dot"></span>
+                <div>
+                    <div class="brand-name">Future Crop AI</div>
+                    <div class="brand-sub">AI-powered crop recommendations</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="controls card">
+            <h3 class="small-title">Soil & Climate Parameters</h3>
+
+            <form id="predictForm">
+                <div class="input-group">
+                    <label for="N">
+                        <span class="label-icon">🧪</span>
+                        Nitrogen (N)
+                        <span class="tooltip" title="Nitrogen content in soil (kg/ha)">ⓘ</span>
+                    </label>
+                    <input type="number" id="N" step="0.01" placeholder="e.g., 90" required>
+                    <div class="input-hint">Typical: 0-140 kg/ha</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="P">
+                        <span class="label-icon">⚗️</span>
+                        Phosphorus (P)
+                        <span class="tooltip" title="Phosphorus content in soil (kg/ha)">ⓘ</span>
+                    </label>
+                    <input type="number" id="P" step="0.01" placeholder="e.g., 42" required>
+                    <div class="input-hint">Typical: 5-145 kg/ha</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="K">
+                        <span class="label-icon">🔬</span>
+                        Potassium (K)
+                        <span class="tooltip" title="Potassium content in soil (kg/ha)">ⓘ</span>
+                    </label>
+                    <input type="number" id="K" step="0.01" placeholder="e.g., 43" required>
+                    <div class="input-hint">Typical: 5-205 kg/ha</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="temperature">
+                        <span class="label-icon">🌡️</span>
+                        Temperature
+                        <span class="tooltip" title="Average temperature in °C">ⓘ</span>
+                    </label>
+                    <input type="number" id="temperature" step="0.01" placeholder="e.g., 25.5" required>
+                    <div class="input-hint">In degrees Celsius</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="humidity">
+                        <span class="label-icon">💧</span>
+                        Humidity
+                        <span class="tooltip" title="Relative humidity percentage">ⓘ</span>
+                    </label>
+                    <input type="number" id="humidity" step="0.01" placeholder="e.g., 80.5" required>
+                    <div class="input-hint">Percentage (0-100%)</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="ph">
+                        <span class="label-icon">🧬</span>
+                        pH Level
+                        <span class="tooltip" title="Soil pH level">ⓘ</span>
+                    </label>
+                    <input type="number" id="ph" step="0.01" placeholder="e.g., 6.5" required>
+                    <div class="input-hint">Range: 3.5-9.5</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="rainfall">
+                        <span class="label-icon">🌧️</span>
+                        Rainfall
+                        <span class="tooltip" title="Average annual rainfall">ⓘ</span>
+                    </label>
+                    <input type="number" id="rainfall" step="0.01" placeholder="e.g., 202.5" required>
+                    <div class="input-hint">In millimeters (mm)</div>
+                </div>
+
+                <div class="btn-row">
+                    <button type="submit" class="btn primary" id="predictBtn">
+                        <span class="btn-icon">🌾</span>
+                        <span>Get Recommendation</span>
+                    </button>
+                    <button type="button" class="btn ghost" id="clearBtn" title="Clear form">
+                        <span>✕</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="quick-actions">
+                <button type="button" class="quick-btn" data-preset="rice">
+                    <span>🌾</span> Rice Sample
+                </button>
+                <button type="button" class="quick-btn" data-preset="wheat">
+                    <span>🌾</span> Wheat Sample
+                </button>
+                <button type="button" class="quick-btn" data-preset="cotton">
+                    <span>🌱</span> Cotton Sample
+                </button>
+            </div>
+
+            <div class="status-group">
+                <div class="status-item">
+                    <span class="status-dot" id="apiStatusDot"></span>
+                    <span id="apiStatus">API: checking…</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-bottom card small muted">
+            <strong>💡 Pro Tip:</strong> Enter your soil test results and climate data for accurate crop recommendations.
+        </div>
+    </aside>
+
+    <header class="topbar">
+        <div class="top-left">
+            <button id="menuToggle" class="icon-btn" aria-label="Toggle menu">☰</button>
+        </div>
+        <div class="top-title">
+            <h1>Crop Recommendation</h1>
+            <p class="muted">AI-powered analysis for optimal crop selection</p>
+        </div>
+
+        <div class="top-right">
+            <div id="confidenceBadge" class="badge muted">
+                <span class="badge-icon">🎯</span>
+                <span>— Confidence</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-grid container">
+        <section class="panel result-panel card">
+            <div class="panel-head">
+                <h2>Recommendation Results</h2>
+                <button id="exportBtn" class="icon-btn small" title="Export results">
+                    <span>📥</span>
+                </button>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">🌱</div>
+                <h3>Ready to Recommend</h3>
+                <p>Enter your soil and climate parameters in the sidebar to get AI-powered crop recommendations.</p>
+            </div>
+
+            <div id="resultContent" class="result-content hide">
+                <div class="recommended-crop">
+                    <div class="crop-badge">
+                        <div class="crop-icon" id="cropIcon">🌾</div>
+                    </div>
+                    <div class="crop-details">
+                        <div class="crop-label">Recommended Crop</div>
+                        <div class="crop-name" id="recommendedCrop">—</div>
+                        <div class="crop-desc" id="cropDescription">Select parameters to get recommendation</div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-label">Confidence</div>
+                        <div class="metric-value" id="confidence">—</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-label">Suitability</div>
+                        <div class="metric-value" id="suitability">—</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🌱</div>
+                        <div class="metric-label">Growth Score</div>
+                        <div class="metric-value" id="growthScore">—</div>
+                    </div>
+                </div>
+
+                <div id="alternativesSection" class="alternatives-section hide">
+                    <h3>Alternative Crops</h3>
+                    <div id="alternativesList" class="alternatives-list"></div>
+                </div>
+
+                <div id="insightsSection" class="insights-section hide">
+                    <h3>Agronomic Insights</h3>
+                    <div id="insightsList" class="insights-list"></div>
+                </div>
+
+                <div id="soilAnalysis" class="soil-analysis hide">
+                    <h3>Soil Analysis</h3>
+                    <div class="analysis-grid">
+                        <div class="analysis-item">
+                            <div class="analysis-label">NPK Ratio</div>
+                            <div class="analysis-value" id="npkRatio">—</div>
+                            <div class="analysis-status" id="npkStatus">—</div>
+                        </div>
+                        <div class="analysis-item">
+                            <div class="analysis-label">pH Level</div>
+                            <div class="analysis-value" id="phAnalysis">—</div>
+                            <div class="analysis-status" id="phStatus">—</div>
+                        </div>
+                        <div class="analysis-item">
+                            <div class="analysis-label">Climate Suitability</div>
+                            <div class="analysis-value" id="climateAnalysis">—</div>
+                            <div class="analysis-status" id="climateStatus">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="panel info-panel card">
+            <h3>Crop Database</h3>
+            
+            <div id="cropInfo" class="crop-info-detailed">
+                <div class="crop-img-wrapper">
+                    <img id="cropDetailImg" src="" alt="crop" />
+                    <div class="crop-img-placeholder">🌾</div>
+                </div>
+                <div id="cropDetailName" class="crop-title">No crop selected</div>
+                <div id="cropDetailDesc" class="muted tiny">Recommendation will appear here after analysis.</div>
+            </div>
+
+            <div id="cropRequirements" class="crop-requirements hide">
+                <h4>Optimal Conditions</h4>
+                <div class="requirement-list">
+                    <div class="requirement-item">
+                        <span class="req-icon">🌡️</span>
+                        <div>
+                            <div class="req-label">Temperature</div>
+                            <div class="req-value" id="reqTemp">—</div>
+                        </div>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon">💧</span>
+                        <div>
+                            <div class="req-label">Humidity</div>
+                            <div class="req-value" id="reqHumidity">—</div>
+                        </div>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon">🌧️</span>
+                        <div>
+                            <div class="req-label">Rainfall</div>
+                            <div class="req-value" id="reqRainfall">—</div>
+                        </div>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon">🧬</span>
+                        <div>
+                            <div class="req-label">pH Range</div>
+                            <div class="req-value" id="reqPH">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="parametersDisplay" class="parameters-display hide">
+                <h4>Your Input Parameters</h4>
+                <div class="param-grid">
+                    <div class="param-item">
+                        <span class="param-label">N:</span>
+                        <span class="param-value" id="displayN">—</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">P:</span>
+                        <span class="param-value" id="displayP">—</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">K:</span>
+                        <span class="param-value" id="displayK">—</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Temp:</span>
+                        <span class="param-value" id="displayTemp">—</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Humidity:</span>
+                        <span class="param-value" id="displayHumidity">—</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">pH:</span>
+                        <span class="param-value" id="displayPH">—</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-label">Rainfall:</span>
+                        <span class="param-value" id="displayRainfall">—</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <div id="toaster" class="toaster"></div>
+
+    <div id="loading" class="loading-overlay hide">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <div class="loading-text">Analyzing conditions...</div>
+        </div>
+    </div>
+
+    <footer class="footer muted">© 2025 Future Crop AI • Empowering farmers with intelligence</footer>
+</body>
+</html>

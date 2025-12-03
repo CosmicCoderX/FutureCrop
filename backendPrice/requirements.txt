@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+joblib
+numpy
+scikit-learn
+pydantic>=1.10,<2

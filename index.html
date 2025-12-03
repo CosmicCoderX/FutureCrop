@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future Crop AI • Dashboard</title>
+
+    <link rel="icon" type="image/png" href="./images/AgriSenseLogo.png" />
+    <link rel="stylesheet" href="./style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">🌱</div>
+                <span>Future Crop AI</span>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="./PricePredictionPage/price_index.html">Price Prediction</a></li>
+                <li><a href="./CropRecommendationPage/crop_index.html">Crop Recommendation</a></li>
+                <li><span id="userEmail" style="color: var(--primary); font-size: 0.9em;"></span></li>
+                <li><button id="logoutBtn" class="btn btn-secondary"
+                        style="padding: 8px 16px; font-size: 0.85rem;">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>
+                    Smart Farming with <br />
+                    <span class="grad-text">AI-Powered Insights</span>
+                </h1>
+                <p>
+                    Empowering farmers with data-driven decisions. Predict market prices,
+                    analyze soil health, and discover the perfect crops for your land
+                    to maximize yield and profitability.
+                </p>
+                <div class="hero-actions">
+                    <a href="./PricePredictionPage/price_index.html" class="btn btn-primary">
+                        📊 Price Prediction
+                    </a>
+                    <a href="./CropRecommendationPage/crop_index.html" class="btn btn-secondary">
+                        🌱 Crop Recommendation
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <img src="./images/wheat.jpg" alt="Smart Agriculture" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= STATS BAR ================= -->
+    <section class="stats-bar">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <h3>98%</h3>
+                <p>Prediction Accuracy</p>
+            </div>
+            <div class="stat-item">
+                <h3>20+</h3>
+                <p>Crops Supported</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Regions Covered</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Real-time Analysis</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FEATURES SECTION ================= -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Features</h2>
+                <p>Everything you need to make smarter agricultural decisions.</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Price Prediction</h3>
+                    <p>
+                        Stay ahead of the market. Our advanced ML models analyze historical data,
+                        market trends, and seasonal patterns to forecast future crop prices with high accuracy.
+                    </p>
+                    <a href="./PricePredictionPage/price_index.html" class="feature-link">Try Prediction →</a>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>Crop Recommendation</h3>
+                    <p>
+                        Not sure what to plant? Input your soil data (N, P, K, pH) and environmental
+                        conditions to get scientifically backed crop recommendations for your specific plot.
+                    </p>
+                    <a href="./CropRecommendationPage/crop_index.html" class="feature-link">Get Recommendation →</a>
+                </div>
+
+                <!-- Feature 3 (Placeholder for visual balance) -->
+                <div class="feature-card">
+                    <div class="feature-icon">🌦️</div>
+                    <h3>Climate Analysis</h3>
+                    <p>
+                        Integrated weather forecasting helps you plan your sowing and harvesting
+                        windows perfectly to avoid crop damage and ensure optimal growth.
+                    </p>
+                    <a href="#" class="feature-link">Coming Soon →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Simple steps to transform your farming strategy.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Select Your Tool</h3>
+                    <p>Choose between Price Prediction or Crop Recommendation based on your current needs.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Enter Data</h3>
+                    <p>Input basic details like location, soil values, or crop type into our intuitive forms.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Get Insights</h3>
+                    <p>Receive instant, AI-generated reports and actionable advice to optimize your results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CTA SECTION ================= -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <h2>Ready to Optimize Your Yield?</h2>
+            <p>Join thousands of farmers using AI to build a more sustainable and profitable future.</p>
+            <a href="./CropRecommendationPage/crop_index.html" class="btn btn-primary">Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Future Crop AI</div>
+                <div class="footer-links">
+                    <a href="#">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2025 Future Crop AI. All rights reserved. Built for smart agriculture.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="./auth/firebase.js"></script>
+    <script src="./script.js"></script>
+
+</body>
+
+</html>

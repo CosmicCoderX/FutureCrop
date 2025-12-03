@@ -1,0 +1,458 @@
+{
+  "Beans": {
+    "name": "Beans",
+    "icon": "🫘",
+    "image": "beans.jpg",
+    "desc": "Nutrient-rich vegetable crop with steady demand. Grows well in warm climates.",
+    "requirements": {
+      "temp": "18-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Bitter Gourd": {
+    "name": "Bitter Gourd (Karela)",
+    "icon": "🥒",
+    "image": "bittergourd.jpg",
+    "desc": "Medicinal vegetable valued for its health benefits. Requires warm and humid conditions.",
+    "requirements": {
+      "temp": "24-30°C",
+      "humidity": "60-80%",
+      "rainfall": "100-150mm",
+      "ph": "5.5-6.7"
+    }
+  },
+  "Bottle Gourd": {
+    "name": "Bottle Gourd (Lauki)",
+    "icon": "🥒",
+    "image": "bottlegourd.jpg",
+    "desc": "Popular summer vegetable with high consumer demand and strong market supply.",
+    "requirements": {
+      "temp": "20-30°C",
+      "humidity": "50-70%",
+      "rainfall": "80-120mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Brinjal": {
+    "name": "Brinjal (Eggplant)",
+    "icon": "🍆",
+    "image": "brinjal.jpg",
+    "desc": "Widely grown vegetable crop with multiple varieties and strong year-round demand.",
+    "requirements": {
+      "temp": "18-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "5.5-6.5"
+    }
+  },
+  "Cabbage": {
+    "name": "Cabbage",
+    "icon": "🥬",
+    "image": "cabbage.jpg",
+    "desc": "Cool-season leafy vegetable that yields well in winter climates.",
+    "requirements": {
+      "temp": "12-25°C",
+      "humidity": "60-80%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Capsicum": {
+    "name": "Capsicum (Bell Pepper)",
+    "icon": "🫑",
+    "image": "capsicum.jpg",
+    "desc": "High-value vegetable cultivated widely, especially near urban markets.",
+    "requirements": {
+      "temp": "18-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-75mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "Carrot": {
+    "name": "Carrot",
+    "icon": "🥕",
+    "image": "carrot.jpg",
+    "desc": "Root vegetable rich in nutrition, mainly cultivated in cool seasons.",
+    "requirements": {
+      "temp": "10-25°C",
+      "humidity": "50-70%",
+      "rainfall": "75-125mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "Cauliflower": {
+    "name": "Cauliflower",
+    "icon": "🥦",
+    "image": "cauliflower.jpg",
+    "desc": "Highly consumed winter vegetable requiring proper temperature control.",
+    "requirements": {
+      "temp": "15-25°C",
+      "humidity": "60-80%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Green Chilli": {
+    "name": "Green Chilli",
+    "icon": "🌶️",
+    "image": "greenchilli.jpg",
+    "desc": "Widely consumed spicy vegetable with strong year-round demand.",
+    "requirements": {
+      "temp": "20-30°C",
+      "humidity": "40-60%",
+      "rainfall": "50-75mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "Onion": {
+    "name": "Onion",
+    "icon": "🧅",
+    "image": "onion.jpg",
+    "desc": "Essential household vegetable with high price volatility across seasons.",
+    "requirements": {
+      "temp": "12-25°C",
+      "humidity": "40-60%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Potato": {
+    "name": "Potato",
+    "icon": "🥔",
+    "image": "potato.jpg",
+    "desc": "High-consumption tuber crop with strong market and processing demand.",
+    "requirements": {
+      "temp": "15-20°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "5.5-7.5"
+    }
+  },
+  "Pumpkin": {
+    "name": "Pumpkin",
+    "icon": "🎃",
+    "image": "pumpkin.jpg",
+    "desc": "Long-shelf-life vegetable with stable market demand.",
+    "requirements": {
+      "temp": "20-30°C",
+      "humidity": "50-70%",
+      "rainfall": "75-120mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Spinach": {
+    "name": "Spinach",
+    "icon": "🌿",
+    "image": "spinach.jpg",
+    "desc": "Highly nutritious leafy vegetable harvested frequently.",
+    "requirements": {
+      "temp": "10-24°C",
+      "humidity": "60-80%",
+      "rainfall": "40-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Tinda": {
+    "name": "Tinda (Indian Round Gourd)",
+    "icon": "🍈",
+    "image": "tinda.jpg",
+    "desc": "Popular summer vegetable grown mainly in North India.",
+    "requirements": {
+      "temp": "20-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "Tomato": {
+    "name": "Tomato",
+    "icon": "🍅",
+    "image": "tomato.jpg",
+    "desc": "High-demand vegetable with seasonal price fluctuations.",
+    "requirements": {
+      "temp": "18-28°C",
+      "humidity": "50-70%",
+      "rainfall": "60-120mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "rice": {
+    "name": "Rice",
+    "icon": "🌾",
+    "image": "rice.jpg",
+    "desc": "Staple grain crop ideal for flooded conditions and high humidity.",
+    "requirements": {
+      "temp": "20-27°C",
+      "humidity": "80-90%",
+      "rainfall": "150-300mm",
+      "ph": "5.5-7.0"
+    }
+  },
+  "wheat": {
+    "name": "Wheat",
+    "icon": "🌾",
+    "image": "wheat.jpg",
+    "desc": "Winter cereal crop requiring moderate water and cooler temperatures.",
+    "requirements": {
+      "temp": "12-25°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "maize": {
+    "name": "Maize",
+    "icon": "🌽",
+    "image": "maize.jpg",
+    "desc": "Versatile crop thriving in warm conditions with moderate rainfall.",
+    "requirements": {
+      "temp": "21-27°C",
+      "humidity": "60-80%",
+      "rainfall": "50-100mm",
+      "ph": "5.8-7.0"
+    }
+  },
+  "cotton": {
+    "name": "Cotton",
+    "icon": "🌱",
+    "image": "cotton.jpg",
+    "desc": "Cash crop requiring warm climate and adequate water supply.",
+    "requirements": {
+      "temp": "21-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "jute": {
+    "name": "Jute",
+    "icon": "🌿",
+    "image": "jute.jpg",
+    "desc": "Fiber crop thriving in hot, humid conditions with heavy rainfall.",
+    "requirements": {
+      "temp": "24-35°C",
+      "humidity": "70-90%",
+      "rainfall": "150-250mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "coconut": {
+    "name": "Coconut",
+    "icon": "🥥",
+    "image": "coconut.jpg",
+    "desc": "Tropical crop requiring high rainfall and warm temperatures.",
+    "requirements": {
+      "temp": "27-32°C",
+      "humidity": "70-80%",
+      "rainfall": "150-250mm",
+      "ph": "5.5-7.0"
+    }
+  },
+  "papaya": {
+    "name": "Papaya",
+    "icon": "🍈",
+    "image": "papaya.jpg",
+    "desc": "Fast-growing fruit crop for tropical and subtropical regions.",
+    "requirements": {
+      "temp": "22-30°C",
+      "humidity": "60-80%",
+      "rainfall": "100-200mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "orange": {
+    "name": "Orange",
+    "icon": "🍊",
+    "image": "orange.jpg",
+    "desc": "Citrus crop requiring moderate climate and well-drained soil.",
+    "requirements": {
+      "temp": "15-30°C",
+      "humidity": "50-70%",
+      "rainfall": "75-150mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "apple": {
+    "name": "Apple",
+    "icon": "🍎",
+    "image": "apple.jpg",
+    "desc": "Temperate fruit requiring cold winters and moderate summers.",
+    "requirements": {
+      "temp": "4-24°C",
+      "humidity": "40-60%",
+      "rainfall": "50-125mm",
+      "ph": "5.5-7.0"
+    }
+  },
+  "muskmelon": {
+    "name": "Muskmelon",
+    "icon": "🍈",
+    "image": "muskmelon.jpg",
+    "desc": "Warm-season melon requiring moderate water and sunshine.",
+    "requirements": {
+      "temp": "18-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "watermelon": {
+    "name": "Watermelon",
+    "icon": "🍉",
+    "image": "watermelon.jpg",
+    "desc": "Summer fruit crop thriving in hot, sunny conditions.",
+    "requirements": {
+      "temp": "21-35°C",
+      "humidity": "50-70%",
+      "rainfall": "40-80mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "grapes": {
+    "name": "Grapes",
+    "icon": "🍇",
+    "image": "grapes.jpg",
+    "desc": "Premium fruit requiring specific climate and soil conditions.",
+    "requirements": {
+      "temp": "15-30°C",
+      "humidity": "40-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "mango": {
+    "name": "Mango",
+    "icon": "🥭",
+    "image": "mango.jpg",
+    "desc": "King of fruits, thriving in tropical and subtropical climates.",
+    "requirements": {
+      "temp": "24-30°C",
+      "humidity": "50-75%",
+      "rainfall": "75-150mm",
+      "ph": "5.5-7.5"
+    }
+  },
+  "banana": {
+    "name": "Banana",
+    "icon": "🍌",
+    "image": "banana.jpg",
+    "desc": "Year-round tropical fruit requiring high moisture and warmth.",
+    "requirements": {
+      "temp": "26-30°C",
+      "humidity": "75-85%",
+      "rainfall": "100-180mm",
+      "ph": "5.5-7.0"
+    }
+  },
+  "pomegranate": {
+    "name": "Pomegranate",
+    "icon": "💎",
+    "image": "pomegranate.jpg",
+    "desc": "Drought-tolerant fruit crop for semi-arid regions.",
+    "requirements": {
+      "temp": "15-35°C",
+      "humidity": "30-60%",
+      "rainfall": "50-100mm",
+      "ph": "6.5-7.5"
+    }
+  },
+  "coffee": {
+    "name": "Coffee",
+    "icon": "☕",
+    "image": "coffee.jpg",
+    "desc": "Tropical crop requiring shade, altitude, and consistent rainfall.",
+    "requirements": {
+      "temp": "15-28°C",
+      "humidity": "70-85%",
+      "rainfall": "150-250mm",
+      "ph": "6.0-6.5"
+    }
+  },
+  "chickpea": {
+    "name": "Chickpea",
+    "icon": "🫘",
+    "image": "chickpea.jpg",
+    "desc": "Protein-rich pulse crop for cooler, drier conditions.",
+    "requirements": {
+      "temp": "10-30°C",
+      "humidity": "40-70%",
+      "rainfall": "40-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "kidneybeans": {
+    "name": "Kidney Beans",
+    "icon": "🫘",
+    "image": "kidneybeans.jpg",
+    "desc": "Legume crop requiring moderate climate and well-drained soil.",
+    "requirements": {
+      "temp": "15-27°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "pigeonpeas": {
+    "name": "Pigeon Peas",
+    "icon": "🫘",
+    "image": "pigeonpeas.jpg",
+    "desc": "Drought-resistant pulse crop for semi-arid regions.",
+    "requirements": {
+      "temp": "18-30°C",
+      "humidity": "50-70%",
+      "rainfall": "50-100mm",
+      "ph": "5.5-7.5"
+    }
+  },
+  "mothbeans": {
+    "name": "Moth Beans",
+    "icon": "🫘",
+    "image": "mothbeans.jpg",
+    "desc": "Hardy legume adapted to arid and semi-arid conditions.",
+    "requirements": {
+      "temp": "25-35°C",
+      "humidity": "30-60%",
+      "rainfall": "30-60mm",
+      "ph": "6.5-7.5"
+    }
+  },
+  "mungbean": {
+    "name": "Mung Bean",
+    "icon": "🫘",
+    "image": "mungbean.jpg",
+    "desc": "Quick-growing pulse crop for warm, humid conditions.",
+    "requirements": {
+      "temp": "25-35°C",
+      "humidity": "60-80%",
+      "rainfall": "60-100mm",
+      "ph": "6.0-7.5"
+    }
+  },
+  "blackgram": {
+    "name": "Black Gram",
+    "icon": "🫘",
+    "image": "blackgram.jpg",
+    "desc": "Protein-rich pulse for warm, humid climates.",
+    "requirements": {
+      "temp": "25-35°C",
+      "humidity": "60-80%",
+      "rainfall": "60-100mm",
+      "ph": "6.0-7.0"
+    }
+  },
+  "lentil": {
+    "name": "Lentil",
+    "icon": "🫘",
+    "image": "lentil.jpg",
+    "desc": "Cool-season pulse crop requiring moderate water.",
+    "requirements": {
+      "temp": "10-25°C",
+      "humidity": "40-70%",
+      "rainfall": "25-50mm",
+      "ph": "6.0-7.5"
+    }
+  }
+}
