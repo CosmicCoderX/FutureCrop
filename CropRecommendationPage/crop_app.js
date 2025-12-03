@@ -1,6 +1,6 @@
 /* Enhanced Crop Recommendation - JavaScript */
 
-const API_URL = "http://127.0.0.1:8000/predict";
+const API_URL = "https://futurecrop-crop.onrender.com/predict";
 const IMAGE_BASE = "./images"; // Folder for crop images
 
 /* DOM Elements */
