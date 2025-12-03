@@ -2,8 +2,8 @@
    Compatible with backend endpoints + image folder support
 */
 
-const API_BASE = "http://127.0.0.1:8010";
-const IMAGE_BASE = "./images"; // Folder containing crop images
+const API_BASE = "https://futurecrop.onrender.com";
+const IMAGE_BASE = "/images"; // Folder containing crop images
 
 /* DOM refs */
 const $ = (id) => document.getElementById(id);
