@@ -1,8 +1,10 @@
 /* Enhanced price_app.js – Future Crop AI
    Compatible with backend endpoints + image folder support
+   Updated: fixes for predict_by_context payload, confidence handling,
+            more robust API helpers and minor UI fallbacks.
 */
 
-const API_BASE = "https://futurecrop.onrender.com/predict_by_context";
+const API_BASE = "https://futurecrop.onrender.com";
 const IMAGE_BASE = "/images"; // Folder containing crop images
 
 /* DOM refs */
@@ -69,26 +71,40 @@ function showLoading(show = true) {
 
 /* API wrappers */
 async function apiGet(path) {
-  const r = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-  return r.json();
+  try {
+    const r = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
+    if (!r.ok) {
+      // try to extract a JSON error message
+      const txt = await r.text();
+      let data;
+      try { data = JSON.parse(txt); } catch { data = null; }
+      throw new Error(data?.detail || txt || `${r.status} ${r.statusText}`);
+    }
+    return await r.json();
+  } catch (err) {
+    console.error("apiGet error:", path, err);
+    throw err;
+  }
 }
 
 async function apiPost(path, body) {
-  const r = await fetch(`${API_BASE}${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  const txt = await r.text();
-  let data;
   try {
-    data = JSON.parse(txt);
-  } catch {
-    data = { raw: txt };
+    const r = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    const txt = await r.text();
+    let data;
+    try { data = JSON.parse(txt); } catch { data = { raw: txt }; }
+    if (!r.ok) {
+      throw new Error(data?.detail || txt || `${r.status} ${r.statusText}`);
+    }
+    return data;
+  } catch (err) {
+    console.error("apiPost error:", path, err);
+    throw err;
   }
-  if (!r.ok) throw new Error(data?.detail || txt || "Request failed");
-  return data;
 }
 
 /* Load crop database from JSON */
@@ -140,10 +156,12 @@ async function init() {
   
   // Check API health
   try {
-    await apiGet("/health");
+    const health = await apiGet("/health");
+    // backend returns various shapes; presence of obj means ok
     apiStatus.textContent = "API: Online";
     apiStatusDot.classList.add("online");
     apiStatusDot.classList.remove("offline");
+    console.log("API health:", health);
   } catch (e) {
     apiStatus.textContent = "API: Offline";
     apiStatusDot.classList.add("offline");
@@ -173,12 +191,14 @@ async function init() {
 /* Setup event listeners */
 function setupEventListeners() {
   // Sidebar toggle
-  menuToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("collapsed");
-    document.querySelector(".topbar").classList.toggle("sidebar-collapsed");
-    document.querySelector(".main-grid").classList.toggle("sidebar-collapsed");
-    document.querySelector(".footer").classList.toggle("sidebar-collapsed");
-  });
+  if (menuToggle) {
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+      document.querySelector(".topbar").classList.toggle("sidebar-collapsed");
+      document.querySelector(".main-grid").classList.toggle("sidebar-collapsed");
+      document.querySelector(".footer").classList.toggle("sidebar-collapsed");
+    });
+  }
 
   // Cascading selects
   commodity.addEventListener("change", handleCommodityChange);
@@ -209,7 +229,8 @@ async function handleCommodityChange() {
   try {
     const res = await apiGet(`/states?commodity=${encodeURIComponent(c)}`);
     fillSelect(stateSel, res.states || [], "Select a state…");
-  } catch {
+  } catch (err) {
+    console.error(err);
     setDisabled(stateSel, true, "States unavailable");
     toast("Could not load states for this crop.", true);
   }
@@ -221,21 +242,26 @@ function updateCropInfo(selectedCrop) {
     cropDatabase[selectedCrop] ||
     cropDatabase[selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)] ||
     Object.values(cropDatabase).find(
-      (c) => c.name.toLowerCase() === selectedCrop.toLowerCase()
+      (c) => (c.name || "").toLowerCase() === selectedCrop.toLowerCase()
     );
 
   if (info) {
-    cropName.textContent = info.name;
-    cropDesc.textContent = info.desc;
+    cropName.textContent = info.name || selectedCrop;
+    cropDesc.textContent = info.desc || "";
 
     if (info.image) {
-      cropImg.src = `${IMAGE_BASE}/${info.image}`;
-      cropImg.alt = info.name;
+      // keep path relative to images folder unless absolute url provided
+      cropImg.src = info.image.startsWith("http") ? info.image : `${IMAGE_BASE}/${info.image}`;
+      cropImg.alt = info.name || selectedCrop;
+    } else {
+      cropImg.src = "";
+      cropImg.alt = selectedCrop;
     }
   } else {
     cropName.textContent = selectedCrop;
     cropDesc.textContent = "Crop information being updated. Check back soon!";
     cropImg.src = "";
+    cropImg.alt = selectedCrop;
   }
 }
 
@@ -255,7 +281,8 @@ async function handleStateChange() {
   try {
     const res = await apiGet(`/markets?commodity=${encodeURIComponent(c)}&state=${encodeURIComponent(s)}`);
     fillSelect(marketSel, res.markets || [], "Select a market…");
-  } catch {
+  } catch (err) {
+    console.error(err);
     setDisabled(marketSel, true, "Markets unavailable");
     toast("Could not load markets for that state.", true);
   }
@@ -284,6 +311,7 @@ function validate() {
     commodity: c,
     state: s,
     market: m,
+    // Keep period for series endpoint (not used by predict_by_context)
     period: Number(forecastPeriod.value || 12)
   };
 }
@@ -302,19 +330,31 @@ async function handlePredict() {
   resetChartUI();
 
   try {
-    const resp = await apiPost("/predict_by_context", q);
+    // prepare payload for predict_by_context (the backend expects commodity/state/market/date)
+    const predictPayload = {
+      commodity: q.commodity,
+      state: q.state,
+      market: q.market,
+      date: null
+    };
+
+    const resp = await apiPost("/predict_by_context", predictPayload);
     
-    // Update metadata
+    // Update metadata (use backend fields if present)
     metaWindow.textContent = resp.window_size ?? "—";
     metaUsed.textContent = resp.used_points ?? "—";
     metaPadded.textContent = resp.padded ? "Yes" : "No";
     
-    // Update confidence badge
-    if (resp.confidence) {
+    // Confidence: backend doesn't provide confidence by default; be defensive
+    const confidence = resp.confidence ?? resp.conf ?? null;
+    if (confidence !== null && confidence !== undefined) {
+      const pct = Math.round(Number(confidence) * 100);
       confidenceBadge.innerHTML = `
         <span class="badge-icon">🎯</span>
-        <span>${Math.round(resp.confidence * 100)}% Confidence</span>
+        <span>${pct}% Confidence</span>
       `;
+    } else {
+      confidenceBadge.innerHTML = '<span class="badge-icon">🎯</span><span>— Confidence</span>';
     }
 
     // Show prediction result
@@ -322,6 +362,8 @@ async function handlePredict() {
       const priceIN = Number(resp.predicted_next_price).toLocaleString("en-IN");
       resultBox.innerHTML = `<strong>Predicted next price:</strong> ₹${priceIN}`;
       resultBox.classList.remove("hide");
+    } else {
+      resultBox.classList.add("hide");
     }
 
     // Update crop info from response or database
@@ -335,7 +377,7 @@ async function handlePredict() {
       updateCropInfo(q.commodity);
     }
 
-    // Draw chart with series data
+    // Draw chart with series data (uses q.period internally)
     await drawSeries(q, resp);
     
     // Generate insights
@@ -343,7 +385,8 @@ async function handlePredict() {
     
     toast("Prediction completed successfully! 🎉");
   } catch (e) {
-    toast(`Prediction failed: ${e.message}`, true);
+    console.error("Prediction error:", e);
+    toast(`Prediction failed: ${e.message || e}`, true);
     chartNote.textContent = "Chart not updated due to error.";
   } finally {
     predictBtn.disabled = false;
@@ -355,8 +398,10 @@ async function handlePredict() {
 function generateInsights(resp, query) {
   const insights = [];
   
-  if (resp.confidence) {
-    const conf = Math.round(resp.confidence * 100);
+  // If backend exposes a confidence-like field, we use it
+  const confRaw = resp.confidence ?? resp.conf ?? null;
+  if (confRaw !== null && confRaw !== undefined) {
+    const conf = Math.round(Number(confRaw) * 100);
     if (conf >= 80) {
       insights.push("🎯 High confidence prediction - strong historical data patterns detected.");
     } else if (conf >= 60) {
@@ -369,14 +414,15 @@ function generateInsights(resp, query) {
   if (chartData.predicted.length > 0 && chartData.historical.length > 0) {
     const lastHist = chartData.historical[chartData.historical.length - 1];
     const lastPred = chartData.predicted[chartData.predicted.length - 1];
-    const change = ((lastPred - lastHist) / lastHist) * 100;
-    
-    if (change > 10) {
-      insights.push("📈 Significant price increase expected - good time to hold inventory.");
-    } else if (change < -10) {
-      insights.push("📉 Price decline forecasted - consider selling sooner.");
-    } else {
-      insights.push("➡️ Relatively stable prices expected in the forecast period.");
+    if (lastHist !== null && lastHist !== undefined && lastHist !== 0) {
+      const change = ((lastPred - lastHist) / lastHist) * 100;
+      if (change > 10) {
+        insights.push("📈 Significant price increase expected - good time to hold inventory.");
+      } else if (change < -10) {
+        insights.push("📉 Price decline forecasted - consider selling sooner.");
+      } else {
+        insights.push("➡️ Relatively stable prices expected in the forecast period.");
+      }
     }
   }
 
@@ -393,6 +439,8 @@ function generateInsights(resp, query) {
       .map(text => `<div class="insight-item">${text}</div>`)
       .join("");
     insightsSection.classList.remove("hide");
+  } else {
+    insightsSection.classList.add("hide");
   }
 }
 
@@ -652,6 +700,7 @@ async function drawSeries(q, predictResp) {
       chartNote.textContent = "⚠️ Limited historical data - showing prediction only.";
     }
   } catch (e) {
+    console.error("drawSeries error:", e);
     // Fallback rendering
     if (predictResp?.predicted_next_price !== undefined) {
       const d = new Date().toISOString().slice(0, 10);
@@ -663,6 +712,12 @@ async function drawSeries(q, predictResp) {
       currentPriceEl.textContent = "—";
       predictedPriceEl.textContent = `₹${Number(predictResp.predicted_next_price).toLocaleString("en-IN")}`;
       chartNote.textContent = "⚠️ Historical data unavailable.";
+      // set chartData so export works
+      chartData = {
+        labels: [d],
+        historical: [null],
+        predicted: [predictResp.predicted_next_price]
+      };
     } else {
       toast("Could not render chart data.", true);
     }
@@ -691,7 +746,12 @@ function updatePriceCards(prices, predictedPrices, predictResp) {
       const sign = pct >= 0 ? "+" : "";
       predictedPctEl.textContent = `${sign}${pct.toFixed(1)}%`;
       predictedPctEl.style.color = pct >= 0 ? "#7ee7b1" : "#ffb3b3";
+    } else {
+      predictedPctEl.textContent = "";
     }
+  } else {
+    predictedPriceEl.textContent = "—";
+    predictedPctEl.textContent = "";
   }
 }
 
@@ -708,6 +768,8 @@ function updatePeakMonth(fullLabels, prices, predictedPrices) {
     }
     const peakLabel = fullLabels[maxIdx] || "—";
     peakMonthEl.textContent = formatMonth(peakLabel);
+  } else {
+    peakMonthEl.textContent = "—";
   }
 }
 
@@ -718,7 +780,10 @@ function updateMarketLabel(q) {
 
 /* Calculate and display statistics */
 function calculateStatistics(prices, predicted) {
-  if (prices.length < 2) return;
+  if (!prices || prices.length < 2) {
+    quickStats.classList.add("hide");
+    return;
+  }
 
   // Calculate volatility (coefficient of variation)
   const mean = prices.reduce((a, b) => a + b, 0) / prices.length;
