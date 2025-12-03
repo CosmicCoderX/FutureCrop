@@ -180,7 +180,7 @@ async function handlePredict(e) {
 
 async function loadCropDatabase() {
   try {
-    const response = await fetch("./crops.json");
+    const response = await fetch("/crops.json");
     cropDatabase = await response.json();
     console.log("Crop database loaded:", Object.keys(cropDatabase).length, "crops");
   } catch (err) {
