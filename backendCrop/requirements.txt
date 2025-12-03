@@ -1,4 +1,4 @@
-# Backend dependencies for AgriSense
+# Backend dependencies for backendCrop
 python==3.10.12
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
