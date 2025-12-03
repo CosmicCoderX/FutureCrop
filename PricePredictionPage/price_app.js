@@ -94,7 +94,7 @@ async function apiPost(path, body) {
 /* Load crop database from JSON */
 async function loadCropDatabase() {
   try {
-    const response = await fetch("./crops.json", { cache: "no-store" });
+    const response = await fetch("/crops.json", { cache: "no-store" });
     
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
