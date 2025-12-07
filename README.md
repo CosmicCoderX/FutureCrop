@@ -22,7 +22,7 @@ An AI-powered agriculture assistant offering **Crop Recommendation**, **Price Pr
 ```
 cd backendCrop
 pip install -r requirements.txt
-python app.py
+uvicorn app:app --reload --port 8000
 ```
 Default endpoint:
 ```
@@ -33,7 +33,7 @@ http://127.0.0.1:8000/predict
 ```
 cd backendPrice
 pip install -r requirements.txt
-python -m uvicorn backendPrice.app:app --reload --port 8010
+uvicorn app:app --reload --port 8010
 ```
 Default endpoint:
 ```
@@ -44,11 +44,11 @@ http://127.0.0.1:8010/forecast
 ```
 cd backendWeather
 pip install -r requirements.txt
-python -m uvicorn backendWeather.main:app --reload --port 8020
+uvicorn main:app --reload --port 5000
 ```
 Default endpoint:
 ```
-http://127.0.0.1:8020/predict
+http://127.0.0.1:5000/predict
 ```
 
 ---
