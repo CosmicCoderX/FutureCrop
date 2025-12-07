@@ -3,7 +3,7 @@
 */
 
 const API_BASE = "http://127.0.0.1:8010";
-const IMAGE_BASE = "./images"; // Folder containing crop images
+const IMAGE_BASE = "/images"; // Folder containing crop images
 
 /* DOM refs */
 const $ = (id) => document.getElementById(id);
@@ -94,7 +94,7 @@ async function apiPost(path, body) {
 /* Load crop database from JSON */
 async function loadCropDatabase() {
   try {
-    const response = await fetch("./crops.json", { cache: "no-store" });
+    const response = await fetch("/crops.json", { cache: "no-store" });
     
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);

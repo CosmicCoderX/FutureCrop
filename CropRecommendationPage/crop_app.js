@@ -1,7 +1,7 @@
 /* Enhanced Crop Recommendation - JavaScript */
 
 const API_URL = "http://127.0.0.1:8000/predict";
-const IMAGE_BASE = "./images"; // Folder for crop images
+const IMAGE_BASE = "/images"; // Folder for crop images
 
 /* DOM Elements */
 const $ = (id) => document.getElementById(id);
@@ -180,7 +180,7 @@ async function handlePredict(e) {
 
 async function loadCropDatabase() {
   try {
-    const response = await fetch("./crops.json");
+    const response = await fetch("/crops.json");
     cropDatabase = await response.json();
     console.log("Crop database loaded:", Object.keys(cropDatabase).length, "crops");
   } catch (err) {

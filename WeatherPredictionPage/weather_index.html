@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureCrop AI - Weather Intelligence</title>
+    <link rel="icon" type="image/png" href="/images/AgriSenseLogo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="weather_style.css">
+</head>
+<body>
+    <!-- Background Video -->
+    <video id="bgVideo" autoplay muted loop playsinline></video>
+    
+    <!-- Animated Particle Canvas -->
+    <canvas id="bgCanvas"></canvas>
+    
+    <div class="overlay"></div>
+    
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <div class="container">
+        <!-- Left Panel -->
+        <div class="left-panel glass">
+            <div class="logo-section" style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <span class="logo-dot"></span>
+                <div class="logo-text">
+                    <h3>FutureCrop AI</h3>
+                    <p>Weather Intelligence System</p>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <input id="cityInput" type="text" placeholder="Search for a city..." />
+                <button id="searchBtn">Search</button>
+            </div>
+
+            <div class="location-block">
+                <h1 id="cityName">—</h1>
+                <div class="country" id="countryName">
+                    <span>📍</span>
+                    <span>—</span>
+                </div>
+                <div class="local-time" id="localTime">—</div>
+            </div>
+
+            <div class="current-weather-block">
+                <div class="weather-icon-wrapper">
+                    <!-- This will be replaced by animated icon or emoji -->
+                    <img id="mainIcon" class="weather-icon" src="" alt="Weather Icon" style="display: none;">
+                    <div id="weatherIconEmoji" class="weather-icon-emoji">☀️</div>
+                </div>
+                <div class="temp-main" id="mainTemp">—°C</div>
+                <div class="desc" id="description">—</div>
+                
+                <div class="sun-times">
+                    <div class="sun-time-item">
+                        <span>🌅</span>
+                        <span id="sunrise">—</span>
+                    </div>
+                    <div class="sun-time-item">
+                        <span>🌇</span>
+                        <span id="sunset">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-item glass">
+                    <h4>💧 Humidity</h4>
+                    <p id="humidity">—%</p>
+                </div>
+                <div class="detail-item glass">
+                    <h4>🌡️ Pressure</h4>
+                    <p id="pressure">— hPa</p>
+                </div>
+                <div class="detail-item glass">
+                    <h4>💨 Wind Speed</h4>
+                    <p id="wind">— km/h</p>
+                </div>
+                <div class="detail-item glass">
+                    <h4>🌧️ Rain Intensity</h4>
+                    <p id="rainIntensity">—</p>
+                </div>
+                <div class="detail-item glass">
+                    <h4>☔ Rain Tomorrow</h4>
+                    <p id="rainTomorrow">—</p>
+                </div>
+                <div class="detail-item glass">
+                    <h4>🏭 Air Quality</h4>
+                    <p id="aqiValue">—</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="forecast-section glass">
+                <div class="section-header">
+                    <h2>Next 5 Hours Forecast</h2>
+                </div>
+                <div class="forecast-cards" id="forecastCards"></div>
+            </div>
+
+            <div class="chart-section glass">
+                <div class="section-header">
+                    <h2>Temperature Trend Analysis</h2>
+                </div>
+                <canvas id="tempChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="weather_app.js"></script>
+</body>
+</html>
