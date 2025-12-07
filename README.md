@@ -40,6 +40,17 @@ Default endpoint:
 http://127.0.0.1:8010/forecast
 ```
 
+### **Weather Prediction API**
+```
+cd backendWeather
+pip install -r requirements.txt
+python -m uvicorn backendWeather.main:app --reload --port 8020
+```
+Default endpoint:
+```
+http://127.0.0.1:8020/predict
+```
+
 ---
 ## 🔐 Firebase Setup
 1. Create Firebase project
