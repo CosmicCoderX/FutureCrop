@@ -8,6 +8,7 @@ import os
 import logging
 from pathlib import Path
 from typing import List, Dict, Any
+from fastapi.middleware.cors import CORSMiddleware
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

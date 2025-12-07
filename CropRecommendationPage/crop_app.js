@@ -1,6 +1,6 @@
 /* Enhanced Crop Recommendation - JavaScript */
 
-const API_URL = "http://127.0.0.1:8000/predict";
+const API_URL = "https://futurecrop-crop.onrender.com/predict";
 const IMAGE_BASE = "/images"; // Folder for crop images
 
 /* DOM Elements */
@@ -71,7 +71,7 @@ async function checkAPI() {
     const response = await fetch(API_URL.replace('/predict', '/health') || API_URL, {
       method: 'GET'
     });
-    
+
     if (response.ok) {
       apiStatus.textContent = "API: Online";
       apiStatusDot.classList.add("online");
@@ -91,10 +91,10 @@ async function checkAPI() {
 function setupEventListeners() {
   // Form submission
   predictForm.addEventListener("submit", handlePredict);
-  
+
   // Clear button
   clearBtn.addEventListener("click", handleClear);
-  
+
   // Menu toggle
   menuToggle.addEventListener("click", () => {
     sidebar.classList.toggle("collapsed");
@@ -102,10 +102,10 @@ function setupEventListeners() {
     document.querySelector(".main-grid").classList.toggle("sidebar-collapsed");
     document.querySelector(".footer").classList.toggle("sidebar-collapsed");
   });
-  
+
   // Export button
   exportBtn.addEventListener("click", handleExport);
-  
+
   // Quick preset buttons
   document.querySelectorAll(".quick-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -119,20 +119,20 @@ function setupEventListeners() {
 function loadPreset(preset) {
   const values = presets[preset];
   if (!values) return;
-  
+
   Object.keys(values).forEach(key => {
     if (inputs[key]) {
       inputs[key].value = values[key];
     }
   });
-  
+
   toast(`${preset.charAt(0).toUpperCase() + preset.slice(1)} sample data loaded! 🌾`);
 }
 
 /* Handle form submission */
 async function handlePredict(e) {
   e.preventDefault();
-  
+
   const payload = {
     N: parseFloat(inputs.N.value),
     P: parseFloat(inputs.P.value),
@@ -142,33 +142,33 @@ async function handlePredict(e) {
     ph: parseFloat(inputs.ph.value),
     rainfall: parseFloat(inputs.rainfall.value)
   };
-  
+
   // Validate inputs
   if (Object.values(payload).some(v => isNaN(v))) {
     toast("Please fill in all fields with valid numbers.", true);
     return;
   }
-  
+
   predictBtn.disabled = true;
   showLoading(true);
-  
+
   try {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-    
+
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
-    
+
     const data = await response.json();
     currentPrediction = { ...data, inputs: payload };
-    
+
     displayResults(data, payload);
     toast("Recommendation generated successfully! 🎉");
-    
+
   } catch (error) {
     toast(`Prediction failed: ${error.message}`, true);
     console.error("Prediction error:", error);
@@ -195,7 +195,7 @@ function displayResults(data, inputs) {
   // Hide empty state, show results
   emptyState.classList.add("hide");
   resultContent.classList.remove("hide");
-  
+
   // Get top recommendation from recommendations array
   let topCrop, confidence;
   if (data.recommendations && data.recommendations.length > 0) {
@@ -206,46 +206,46 @@ function displayResults(data, inputs) {
     topCrop = data.prediction || data.crop || data.recommended_crop || "unknown";
     confidence = data.confidence || calculateConfidence(inputs);
   }
-  
+
   const cropName = topCrop.toLowerCase();
   const cropInfo =
-  cropDatabase[topCrop] || 
-  cropDatabase[topCrop.charAt(0).toUpperCase() + topCrop.slice(1)] ||
-  Object.values(cropDatabase).find(c => c.name.toLowerCase() === topCrop.toLowerCase()) ||
-  { name: topCrop, icon: "🌱", desc: "Details unavailable" };
-  
+    cropDatabase[topCrop] ||
+    cropDatabase[topCrop.charAt(0).toUpperCase() + topCrop.slice(1)] ||
+    Object.values(cropDatabase).find(c => c.name.toLowerCase() === topCrop.toLowerCase()) ||
+    { name: topCrop, icon: "🌱", desc: "Details unavailable" };
+
   // Update main crop display
   cropIcon.textContent = cropInfo.icon;
   recommendedCrop.textContent = cropInfo.name;
   cropDescription.textContent = cropInfo.desc;
-  
+
   // Update confidence badge
   confidenceBadge.innerHTML = `
     <span class="badge-icon">🎯</span>
     <span>${Math.round(confidence * 100)}% Confidence</span>
   `;
-  
+
   // Update metrics
   $("confidence").textContent = `${Math.round(confidence * 100)}%`;
   $("suitability").textContent = getSuitabilityLabel(confidence);
   $("growthScore").textContent = `${Math.round(confidence * 9.5 + 0.5)}/10`;
-  
+
   // Update crop detail panel
   updateCropDetails(cropInfo);
-  
+
   // Show soil analysis
   displaySoilAnalysis(inputs);
-  
+
   // Generate alternatives from other recommendations
   if (data.recommendations && data.recommendations.length > 1) {
     displayTopRecommendations(data.recommendations);
   } else {
     generateAlternatives(cropName, inputs);
   }
-  
+
   // Generate insights
   generateInsights(cropInfo, inputs, confidence);
-  
+
   // Display input parameters
   displayParameters(inputs);
 }
@@ -254,7 +254,7 @@ function displayResults(data, inputs) {
 function displayTopRecommendations(recommendations) {
   // Skip first one as it's the main recommendation
   const alternatives = recommendations.slice(1, 3);
-  
+
   if (alternatives.length > 0) {
     alternativesList.innerHTML = alternatives
       .map(rec => {
@@ -272,7 +272,7 @@ function displayTopRecommendations(recommendations) {
         `;
       })
       .join("");
-    
+
     // Update section title
     alternativesSection.querySelector("h3").textContent = "Top Alternative Crops";
     alternativesSection.classList.remove("hide");
@@ -283,11 +283,11 @@ function displayTopRecommendations(recommendations) {
 function updateCropDetails(cropInfo) {
   $("cropDetailName").textContent = cropInfo.name;
   $("cropDetailDesc").textContent = cropInfo.desc;
-  
+
   if (cropInfo.image) {
     $("cropDetailImg").src = `${IMAGE_BASE}/${cropInfo.image}`;
   }
-  
+
   // Show requirements if available
   if (cropInfo.requirements) {
     $("reqTemp").textContent = cropInfo.requirements.temp;
@@ -302,24 +302,24 @@ function updateCropDetails(cropInfo) {
 function displaySoilAnalysis(inputs) {
   const npkRatio = `${inputs.N.toFixed(0)}:${inputs.P.toFixed(0)}:${inputs.K.toFixed(0)}`;
   $("npkRatio").textContent = npkRatio;
-  
+
   // Analyze NPK balance
   const npkBalance = analyzeNPK(inputs.N, inputs.P, inputs.K);
   $("npkStatus").textContent = npkBalance.status;
   $("npkStatus").className = `analysis-status ${npkBalance.class}`;
-  
+
   // Analyze pH
   $("phAnalysis").textContent = inputs.ph.toFixed(1);
   const phAnalysis = analyzePH(inputs.ph);
   $("phStatus").textContent = phAnalysis.status;
   $("phStatus").className = `analysis-status ${phAnalysis.class}`;
-  
+
   // Analyze climate
   const climateScore = analyzeClimate(inputs.temperature, inputs.humidity, inputs.rainfall);
   $("climateAnalysis").textContent = climateScore.label;
   $("climateStatus").textContent = climateScore.status;
   $("climateStatus").className = `analysis-status ${climateScore.class}`;
-  
+
   soilAnalysis.classList.remove("hide");
 }
 
@@ -327,7 +327,7 @@ function displaySoilAnalysis(inputs) {
 function analyzeNPK(n, p, k) {
   const total = n + p + k;
   const nRatio = n / total;
-  
+
   if (nRatio > 0.5) {
     return { status: "High Nitrogen", class: "good" };
   } else if (nRatio > 0.3) {
@@ -351,19 +351,19 @@ function analyzePH(ph) {
 /* Analyze climate */
 function analyzeClimate(temp, humidity, rainfall) {
   let score = 0;
-  
+
   // Temperature score
   if (temp >= 15 && temp <= 35) score += 33;
   else if (temp >= 10 && temp <= 40) score += 20;
-  
+
   // Humidity score
   if (humidity >= 40 && humidity <= 80) score += 33;
   else if (humidity >= 30 && humidity <= 90) score += 20;
-  
+
   // Rainfall score
   if (rainfall >= 50 && rainfall <= 250) score += 34;
   else if (rainfall >= 30 && rainfall <= 300) score += 20;
-  
+
   if (score >= 80) {
     return { label: "Excellent", status: "Highly Suitable", class: "good" };
   } else if (score >= 60) {
@@ -378,14 +378,14 @@ function analyzeClimate(temp, humidity, rainfall) {
 /* Generate alternative crops */
 function generateAlternatives(mainCrop, inputs) {
   const alternatives = [];
-  
+
   // Logic to suggest alternatives based on similar conditions
   Object.keys(cropDatabase).forEach(crop => {
     if (crop !== mainCrop && alternatives.length < 5) {
       alternatives.push(crop);
     }
   });
-  
+
   if (alternatives.length > 0) {
     alternativesList.innerHTML = alternatives
       .map(crop => {
@@ -405,7 +405,7 @@ function generateAlternatives(mainCrop, inputs) {
 /* Generate insights */
 function generateInsights(cropInfo, inputs, confidence) {
   const insights = [];
-  
+
   // Confidence-based insight
   if (confidence >= 0.8) {
     insights.push(`✅ High confidence prediction - ${cropInfo.name} is highly recommended for your conditions.`);
@@ -414,29 +414,29 @@ function generateInsights(cropInfo, inputs, confidence) {
   } else {
     insights.push(`⚠️ Lower confidence - Consider consulting local agricultural experts for best results.`);
   }
-  
+
   // pH insights
   if (inputs.ph < 5.5) {
     insights.push("🧪 Soil is acidic - consider lime application to raise pH levels.");
   } else if (inputs.ph > 7.5) {
     insights.push("🧪 Soil is alkaline - sulfur amendments may help lower pH.");
   }
-  
+
   // NPK insights
   const nRatio = inputs.N / (inputs.N + inputs.P + inputs.K);
   if (nRatio > 0.5) {
     insights.push("🌱 High nitrogen content detected - excellent for leafy growth.");
   }
-  
+
   // Climate insights
   if (inputs.temperature > 30) {
     insights.push("🌡️ High temperature zone - ensure adequate irrigation during peak summer.");
   }
-  
+
   if (inputs.rainfall > 200) {
     insights.push("🌧️ High rainfall area - good drainage is essential to prevent waterlogging.");
   }
-  
+
   if (insights.length > 0) {
     insightsList.innerHTML = insights
       .map(text => `<div class="insight-item">${text}</div>`)
@@ -454,7 +454,7 @@ function displayParameters(inputs) {
   $("displayHumidity").textContent = inputs.humidity.toFixed(1) + "%";
   $("displayPH").textContent = inputs.ph.toFixed(1);
   $("displayRainfall").textContent = inputs.rainfall.toFixed(1) + "mm";
-  
+
   parametersDisplay.classList.remove("hide");
 }
 
@@ -462,19 +462,19 @@ function displayParameters(inputs) {
 function calculateConfidence(inputs) {
   // Simple heuristic based on balanced conditions
   let score = 0.5;
-  
+
   // Balanced NPK increases confidence
   const total = inputs.N + inputs.P + inputs.K;
   const balance = Math.min(inputs.N, inputs.P, inputs.K) / (total / 3);
   score += balance * 0.2;
-  
+
   // Optimal pH
   if (inputs.ph >= 6.0 && inputs.ph <= 7.5) score += 0.15;
-  
+
   // Moderate conditions
   if (inputs.temperature >= 15 && inputs.temperature <= 35) score += 0.1;
   if (inputs.humidity >= 40 && inputs.humidity <= 80) score += 0.05;
-  
+
   return Math.min(score, 0.99);
 }
 
@@ -496,16 +496,16 @@ function handleClear() {
   soilAnalysis.classList.add("hide");
   insightsSection.classList.add("hide");
   alternativesSection.classList.add("hide");
-  
+
   confidenceBadge.innerHTML = `
     <span class="badge-icon">🎯</span>
     <span>— Confidence</span>
   `;
-  
+
   $("cropDetailName").textContent = "No crop selected";
   $("cropDetailDesc").textContent = "Recommendation will appear here after analysis.";
   $("cropDetailImg").src = "";
-  
+
   toast("Form cleared");
 }
 
@@ -515,10 +515,10 @@ function handleExport() {
     toast("No prediction to export. Run analysis first.", true);
     return;
   }
-  
+
   const cropName = (currentPrediction.recommendations?.[0]?.crop || currentPrediction.prediction || currentPrediction.crop || "Unknown").toLowerCase();
   const cropInfo = cropDatabase[cropName] || { name: cropName };
-  
+
   const exportData = {
     timestamp: new Date().toISOString(),
     recommended_crop: cropInfo.name,
@@ -533,7 +533,7 @@ function handleExport() {
       rainfall: currentPrediction.inputs.rainfall
     }
   };
-  
+
   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -543,7 +543,7 @@ function handleExport() {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
-  
+
   toast("Results exported successfully! 📥");
 }
 
