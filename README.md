@@ -65,7 +65,7 @@ http://127.0.0.1:5000/predict
 
 ---
 ## 🌐 Live Demo
-**Demo:** https://your-demo-link-here
+**Demo:** [https://your-demo-link-here](https://future-crop.vercel.app/)
 
 ---
 ## 🤝 Contributing
